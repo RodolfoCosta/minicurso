@@ -4,11 +4,25 @@ const nomeDoPersonagem = document.querySelector('#nome');
 const especie = document.querySelector('#especie');
 const condicao = document.querySelector('#status');
 
+traduzirCondicao = (data) => {
+    if(data.status == 'unknown'){
+        return 'Não sabemos';
+    }else if(data.status == 'Alive'){
+        return 'Sim';
+    }else {
+        return 'Não. Está morto';
+    }
+}
+
+gerarValorAletorio = () => {
+    return Math.floor(Math.random() * 671);
+}
 
 pegarPersonagem = () => {
-    return fetch('https://rickandmortyapi.com/api/character/2', {
+    let numeroAleatorio = gerarValorAletorio();
+    return fetch(`https://rickandmortyapi.com/api/character/${numeroAleatorio}`, {
         method:'GET',
-        headers:{
+        headers: {
             Accept: 'application/json',
             "Content-type": 'application/json'
         }
@@ -17,7 +31,7 @@ pegarPersonagem = () => {
         imagem.alt = data.name;
         nomeDoPersonagem.innerHTML = data.name;
         especie.innerHTML = data.species;
-        condicao.innerHTML = data.status;
+        condicao.innerHTML = traduzirCondicao(data);
     });
 }
 
